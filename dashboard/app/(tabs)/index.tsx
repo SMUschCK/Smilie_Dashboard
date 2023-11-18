@@ -68,7 +68,7 @@ const WeatherForecast: React.FC = () => {
         <View>
           <Text style={styles.header}>Weather Forecast</Text>
           <Text style={styles.text}>Timezone: {forecastData.timezone}</Text>
-          <Text style={styles.text}>Latitude: {forecastData.hourly.time}</Text>
+          <Text style={styles.text}>Latitude: {forecastData.hourly.relativehumidity_2m}</Text>
           {/* Display other relevant data here */}
         </View>
       ) : (

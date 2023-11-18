@@ -6,9 +6,10 @@ import { DataProvider } from '../../context/dataImport';
 
 const App: React.FC = () => {
   return (
-    <DataProvider>
-      <Test />
-    </DataProvider>
+    // <DataProvider>
+    //   <Test />
+    // </DataProvider>
+    <Test/>
     
   );
 };

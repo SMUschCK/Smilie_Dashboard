@@ -1,91 +1,50 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { BarChart } from 'react-native-chart-kit';
+import { VictoryBar } from 'victory';
 import { useData } from '../context/dataImport';
 
-const Test: React.FC = () => {
-  const data = {
-    labels: ['January', 'February', 'March', 'April', 'May'],
-    datasets: [
-      {
-        data: [80000, 48000, 28000, 13000, 5000],
-        colors: [
-          () => '#94D6E9',
-          () => '#ABC2AD',
-          () => '#C89297',
-          () => '#8F90B0',
-          () => '#F2C298',
-        ],
-        strokeWidth: 1,
-      },
-    ],
-  };
+// const Test: React.FC = () => {
+//   const data = [
+//     {quarter: 1, hData: 13000},
+//     {quarter: 2, hData: 16500},
+//     {quarter: 3, hData: 14250},
+//     {quarter: 4, hData: 19000}
+//   ];
 
-  console.log(data);
+//   console.log(data);
 
-  const chartConfig = {
-    backgroundColor: '#e26a00',
-    backgroundGradientFrom: '#fb8c00',
-    backgroundGradientTo: '#ffa726',
-    decimalPlaces: 2, // optional, defaults to 2dp
-    color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-    labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-    style: {
-      borderRadius: 16,
-    },
-    propsForDots: {
-      r: '6',
-      strokeWidth: '2',
-      stroke: '#ffa726',
-    },
-  };
+//     return (
+//       <VictoryBar
+//         data={data}
+//         // data accessor for x values
+//         x="quarter"
+//         // data accessor for y values
+//         y="hData"
+//       />
+//     )
+  
 
+// export default Test;
+
+const data = [
+  {quarter: 1, hData: 88},
+  {quarter: 2, hData: 89},
+  {quarter: 3, hData: 87},
+  {quarter: 4, hData: 87}
+];
+
+const Test = () => {
   return (
-    <View>
-      <BarChart
-        style={{
-          alignItems: 'center',
-          padding: 20,
-        }}
-        data={data}
-        width={300}
-        height={300}
-        chartConfig={{
-          backgroundColor: 'white',
-          backgroundGradientFrom: 'white',
-          backgroundGradientFromOpacity: 0,
-          backgroundGradientTo: 'white',
-          decimalPlaces: 0,
-
-          strokeWidth: 1,
-          barPercentage: 1,
-          propsForBackgroundLines: {
-            strokeDasharray: '',
-            strokeWidth: 1,
-          },
-          fillShadowGradientOpacity: 3,
-          useShadowColorFromDataset: false,
-          propsForVerticalLabels: {
-            fontSize: 13,
-            fontWeight: '400',
-            marginLeft: 0,
-            paddingLeft: 0,
-            textAlign: 'left',
-          },
-          propsForHorizontalLabels: { fontSize: 13, fontWeight: '400' },
-        }}
-        withCustomBarColorFromData={true}
-        flatColor={true}
-        withVerticalLabels={false}
-        showBarTops={false}
-        fromZero={true}
-        withHorizontalLines={true}
-        withVerticalLines={true}
-        withInnerLines={true}
-      />
-      <Text>Loading...</Text>
-    </View>
+    <VictoryBar
+      data={data}
+      // data accessor for x values
+      x="quarter"
+      // data accessor for y values
+      y="hData"
+    />
   );
 };
+
+// ReactDOM.render(<App/>, mountNode); // You don't need this line in a functional component
 
 export default Test;

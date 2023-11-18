@@ -1,30 +1,31 @@
 import React, {Component} from 'react';
 import {AppRegistry, StyleSheet, Text, View} from 'react-native'
 import { useData } from '../context/dataImport';
-import { VictoryBar } from 'victory';
+import { VictoryArea , VictoryChart} from 'victory';
 
-const HumidityGraph: React.FC = () => {
+const RadiationGraph: React.FC = () => {
 
     const { forecastData } = useData();
   
     // Extract relevant data for the BarChart
-    const barChartData: number[] = forecastData ? forecastData.hourly.relativehumidity_2m : [];
+    const radiation: number[] = forecastData ? forecastData.hourly.direct_radiation : [];
     const timeData: string[] = forecastData ? forecastData.hourly.time : [];
-    console.log(barChartData)
 
     const data = timeData.map((timeData, index) => ({
       timeData,
-      barChartData: barChartData[index]
+      radiation: radiation[index]
     }));
-    console.log(data);
+
 
     return (
         <View>
           {forecastData ? (
-            <VictoryBar
-              data={data}
-              x="timeData"
-              y="barChartData"/>
+            <VictoryChart>
+                <VictoryArea
+                data={data}
+                style={{ data: { fill: "#c43a31" } }}
+                y = "radiation"/>
+            </VictoryChart>
           ) : (
             <Text >Data not found...</Text>
           )}
@@ -33,4 +34,4 @@ const HumidityGraph: React.FC = () => {
 
   };
   
-  export default HumidityGraph;
+  export default RadiationGraph;

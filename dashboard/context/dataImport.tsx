@@ -16,7 +16,7 @@ interface ForecastData {
   };
   
   hourly: {
-    time:string;
+    time:string[];
     relativehumidity_2m: number[];
     direct_radiation: number[];
   };
