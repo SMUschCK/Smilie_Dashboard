@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState , ReactNode } from 'react';
 
 interface ForecastData {
   // Define the structure of your data based on the API response
@@ -33,7 +33,7 @@ interface ForecastData {
   
 }
 interface Props {
-    children: React.ReactNode;
+    children: ReactNode | ReactNode[];
   }
 
 interface DataContextProps {
@@ -66,10 +66,12 @@ export const DataProvider: React.FC<Props> = ({ children }) => {
     useEffect(() => {
       fetchForecastData();
     }, []);
-  
+
+    const childrenArray = React.Children.toArray(children);
+
     return (
       <DataContext.Provider value={{ forecastData, fetchForecastData }}>
-        {children}
+        {childrenArray}
       </DataContext.Provider>
     );
   };

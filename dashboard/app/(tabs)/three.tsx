@@ -1,13 +1,12 @@
 import { StyleSheet } from 'react-native';
 import Graph1 from '../../components/Graph';
 import HumidityGraph from '../../components/HumidityGraph';
-import Test from '../../components/Test';
 import { DataProvider } from '../../context/dataImport';
 
 const App: React.FC = () => {
   return (
     <DataProvider>
-      <Test />
+      <HumidityGraph />
     </DataProvider>
     
   );
