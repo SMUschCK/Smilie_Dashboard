@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet , View} from 'react-native';
 import React, {useState} from 'react';
 import Test from '../../components/Test';
 import { DataProvider } from '../../context/TestDataImport';
@@ -9,11 +9,11 @@ import ReactDatePicker from 'react-datepicker';
 const endDate = [];
 const App: React.FC = () => {
   return (
-    <view> 
-    <DataProvider startDate={new Date("2023-10-01")} endDate={new Date("2023-10-06")}>
+    <View> 
+    <DataProvider startDate={new Date("2023-10-02T17:00")} endDate={new Date("2023-10-08T21:00")}>
       <Test />
     </DataProvider>
-    </view>
+    </View>
     // <Test/>
     
   );

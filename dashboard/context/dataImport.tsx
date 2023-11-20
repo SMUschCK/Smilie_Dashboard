@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState , ReactNode } from 'react';
 
 interface ForecastData {
+  forEach(arg0: (element: any) => void): unknown;
   // Define the structure of your data based on the API response
   latitude: Number;
   longitude:Number;
@@ -34,6 +35,8 @@ interface ForecastData {
 }
 interface Props {
     children: ReactNode | ReactNode[];
+    startDate: Date | null;
+    endDate: Date | null;
   }
 
 interface DataContextProps {
@@ -41,11 +44,46 @@ interface DataContextProps {
     fetchForecastData: () => void;
 }
 
+function getIndex (startDate: Date, endDate: Date, dataParent: ForecastData, type: string): number[] {
+  let data: string[] = [];
+
+  if (type === 'hourly') {
+    data = dataParent.hourly.time;
+  } else {
+    data = dataParent.daily.time;
+  }
+
+  let returnData: number[] = [];
+
+  for (let i = 0; i < data.length; i++) {
+    if (new Date(data[i]) < startDate || new Date(data[i]) > endDate) {
+      returnData.push(i);
+    }
+  }
+
+  return returnData;
+};
+
+const removeItemsByIndexes = (dataParent: ForecastData, Hourly_indexesToRemove: number[],  Daily_indexesToRemove: number[]):ForecastData  => {
+    Hourly_indexesToRemove.reverse().forEach((index) => {
+      dataParent.hourly.time.splice(index, 1);
+      dataParent.hourly.relativehumidity_2m.splice(index, 1);
+      dataParent.hourly.direct_radiation.splice(index, 1);
+    });
+
+    Daily_indexesToRemove.reverse().forEach((index) => {
+      dataParent.daily.time.splice(index, 1);
+      dataParent.daily.temperature_2m_max.splice(index, 1);
+      dataParent.daily.temperature_2m_min.splice(index, 1);
+    });
+    return dataParent;
+  };
+
 const DataContext = createContext<DataContextProps | undefined>(undefined);
 
-export const DataProvider: React.FC<Props> = ({ children }) => {
+export const DataProvider: React.FC<Props> = ({ startDate, endDate, children }) => {
     const [forecastData, setForecastData] = useState<ForecastData | null>(null);
-  
+
     const fetchForecastData = async () => {
       try {
         const response = await fetch(
@@ -58,19 +96,31 @@ export const DataProvider: React.FC<Props> = ({ children }) => {
   
         const data: ForecastData = await response.json();
         setForecastData(data);
+        // Filter Date 
+        try{
+          let hourlyIndex = getIndex(startDate, endDate, data, 'hourly');
+          let dailyIndex = getIndex(startDate, endDate, data, 'daily');
+        
+          const finalData = removeItemsByIndexes(data, hourlyIndex, dailyIndex);
+          setForecastData(finalData);
+        }catch(error){
+          console.error('Error with filtering json data to start and end dates', error);
+        }
+        
       } catch (error) {
         console.error('Error fetching data:', error);
       }
+      
     };
   
     useEffect(() => {
       fetchForecastData();
-    }, []);
+    }, [startDate, endDate]);
 
     const childrenArray = React.Children.toArray(children);
 
     return (
-      <DataContext.Provider value={{ forecastData, fetchForecastData }}>
+      <DataContext.Provider value={{ forecastData, fetchForecastData }} >
         {childrenArray}
       </DataContext.Provider>
     );

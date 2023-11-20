@@ -43,7 +43,7 @@ const App: React.FC = () => {
       </div>
       <Text>{startDate.toLocaleString()}</Text>
       <Text>{endDate.toLocaleString()}</Text>
-      <DataProvider>
+      <DataProvider startDate={startDate} endDate={endDate}>
         <HumidityGraph />
         <TemperatureGraph/>
         <RadiationGraph/>
