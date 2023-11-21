@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {AppRegistry, Image, View, Text, StyleSheet} from 'react-native'
 import { useData } from '../context/dataImport';
 import { VictoryArea , VictoryChart, VictoryTheme, VictoryAxis,VictoryLabel} from 'victory-native';
-import catSky from '../assets/catAtSky.gif';
+import CatSky from '../assets/CatAtSky.gif';
 
 const RadiationGraph: React.FC = () => {
 
@@ -52,7 +52,7 @@ const RadiationGraph: React.FC = () => {
             </VictoryChart>
           ) : (
             <View>
-              <Image source={catSky} />
+              <Image source={CatSky} />
               <Text>Data not found...</Text>
             </View>
           )}

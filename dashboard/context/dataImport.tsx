@@ -37,12 +37,14 @@ interface Props {
     children: ReactNode | ReactNode[];
     startDate: Date | null;
     endDate: Date | null;
-  }
+    aggregate: number | 0;
+  };
 
 interface DataContextProps {
     forecastData: ForecastData | null;
     fetchForecastData: () => void;
-}
+};
+
 // Retrieves an array of indices that falls outside the time specified on display page
 function getIndex (startDate: Date, endDate: Date, dataParent: ForecastData, type: string): number[] {
   let data: string[] = [];
@@ -52,7 +54,6 @@ function getIndex (startDate: Date, endDate: Date, dataParent: ForecastData, typ
   } else {
     data = dataParent.daily.time;
     data = data.map(date=> `${date}T23:00`);
-    console.log(data);
   }
 
   let returnData: number[] = [];
@@ -67,23 +68,24 @@ function getIndex (startDate: Date, endDate: Date, dataParent: ForecastData, typ
 };
 // Removes elements under hourly and daily where the array of indices have specified 
 const removeItemsByIndexes = (dataParent: ForecastData, Hourly_indexesToRemove: number[],  Daily_indexesToRemove: number[]):ForecastData  => {
-    Hourly_indexesToRemove.reverse().forEach((index) => {
-      dataParent.hourly.time.splice(index, 1);
-      dataParent.hourly.relativehumidity_2m.splice(index, 1);
-      dataParent.hourly.direct_radiation.splice(index, 1);
-    });
+  Hourly_indexesToRemove.reverse().forEach((index) => {
+    dataParent.hourly.time.splice(index, 1);
+    dataParent.hourly.relativehumidity_2m.splice(index, 1);
+    dataParent.hourly.direct_radiation.splice(index, 1);
+  });
 
-    Daily_indexesToRemove.reverse().forEach((index) => {
-      dataParent.daily.time.splice(index, 1);
-      dataParent.daily.temperature_2m_max.splice(index, 1);
-      dataParent.daily.temperature_2m_min.splice(index, 1);
-    });
-    return dataParent;
-  };
+  Daily_indexesToRemove.reverse().forEach((index) => {
+    dataParent.daily.time.splice(index, 1);
+    dataParent.daily.temperature_2m_max.splice(index, 1);
+    dataParent.daily.temperature_2m_min.splice(index, 1);
+  });
+  return dataParent;
+};
+
 
 const DataContext = createContext<DataContextProps | undefined>(undefined);
 
-export const DataProvider: React.FC<Props> = ({ startDate, endDate, children }) => {
+export const DataProvider: React.FC<Props> = ({ startDate, endDate, aggregate, children }) => {
     const [forecastData, setForecastData] = useState<ForecastData | null>(null);
 
     const fetchForecastData = async () => {
@@ -108,6 +110,18 @@ export const DataProvider: React.FC<Props> = ({ startDate, endDate, children }) 
         }catch(error){
           console.error('Error with filtering json data to start and end dates', error);
         }
+        console.log(forecastData);
+
+        // Aggregating hourly data
+
+          try {
+            // forecastData.aggregate = calculateAggregate(forecastData, aggregate);
+            setForecastData(forecastData.aggregate = calculateAggregate(forecastData, aggregate));
+            console.log(forecastData);
+          } catch (error) {
+            console.error("Could not aggregate data, please check dataImport.tsx", error);
+          }
+        
         
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -117,7 +131,7 @@ export const DataProvider: React.FC<Props> = ({ startDate, endDate, children }) 
   
     useEffect(() => {
       fetchForecastData();
-    }, [startDate, endDate]);
+    }, [startDate, endDate, aggregate]);
 
     const childrenArray = React.Children.toArray(children);
 

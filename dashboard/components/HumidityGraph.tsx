@@ -2,9 +2,12 @@ import React, {Component} from 'react';
 import {AppRegistry, Image, Text, View, StyleSheet} from 'react-native'
 import { useData } from '../context/dataImport';
 import { VictoryBar, VictoryChart, VictoryTheme , VictoryAxis} from 'victory-native';
-import catSky from '../assets/catAtSky.gif';
+import CatSky from '../assets/CatAtSky.gif';
 // import {useTailwind} from 'tailwind-rn';
 
+interface HourlyAggregate {
+  aggregate: number;
+}
 
 const HumidityGraph: React.FC = () => {
     // const tailwind = useTailwind();
@@ -53,7 +56,7 @@ const HumidityGraph: React.FC = () => {
             </VictoryChart>
           ) : (
             <View>
-            <Image source={catSky} />
+            <Image source={CatSky} />
             <Text>Data not found...</Text>
             </View>
           )}
@@ -63,21 +66,21 @@ const HumidityGraph: React.FC = () => {
   };
   const styles = StyleSheet.create({
     tickLabels: {
-      fill: "black",
-      fontFamily: "inherit",
-      fontSize: 16
+      fill: 'black',
+      fontFamily: 'inherit',
+      fontSize: 16,
     },
     axisYears: {
-      axis: { stroke: "black", strokeWidth: 1},
+      axis: { stroke: 'black', strokeWidth: 1 },
       ticks: {
-        stroke: "black",
-        strokeWidth: 1
-        },
-        tickLabels: {
-          fill: "black",
-          fontFamily: "inherit",
-          fontSize: 16
-        }
+        stroke: 'black',
+        strokeWidth: 1,
+      },
+      tickLabels: {
+        fill: 'black',
+        fontFamily: 'inherit',
+        fontSize: 16,
+      },
     },
     separator: {
       marginVertical: 30,

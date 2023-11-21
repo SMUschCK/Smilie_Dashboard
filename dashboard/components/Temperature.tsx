@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {AppRegistry, Image, Text, View, StyleSheet} from 'react-native'
 import { useData } from '../context/dataImport';
 import { VictoryChart, VictoryLine, VictoryTheme, VictoryAxis,VictoryLabel } from 'victory-native';
-import catSky from '../assets/catAtSky.gif';
+import CatSky from '../assets/CatAtSky.gif';
 
 const TemperatureGraph: React.FC = () => {
 
@@ -64,7 +64,7 @@ const TemperatureGraph: React.FC = () => {
             </VictoryChart>
           ) : (
             <View>
-              <Image source={catSky} />
+              <Image source={CatSky} />
               <Text>Data not found...</Text>
             </View>
           )}
