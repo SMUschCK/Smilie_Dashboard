@@ -51,6 +51,8 @@ function getIndex (startDate: Date, endDate: Date, dataParent: ForecastData, typ
     data = dataParent.hourly.time;
   } else {
     data = dataParent.daily.time;
+    data = data.map(date=> `${date}T23:00`);
+    console.log(data);
   }
 
   let returnData: number[] = [];

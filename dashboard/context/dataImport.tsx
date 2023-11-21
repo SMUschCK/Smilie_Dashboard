@@ -43,7 +43,7 @@ interface DataContextProps {
     forecastData: ForecastData | null;
     fetchForecastData: () => void;
 }
-
+// Retrieves an array of indices that falls outside the time specified on display page
 function getIndex (startDate: Date, endDate: Date, dataParent: ForecastData, type: string): number[] {
   let data: string[] = [];
 
@@ -51,6 +51,8 @@ function getIndex (startDate: Date, endDate: Date, dataParent: ForecastData, typ
     data = dataParent.hourly.time;
   } else {
     data = dataParent.daily.time;
+    data = data.map(date=> `${date}T23:00`);
+    console.log(data);
   }
 
   let returnData: number[] = [];
@@ -63,7 +65,7 @@ function getIndex (startDate: Date, endDate: Date, dataParent: ForecastData, typ
 
   return returnData;
 };
-
+// Removes elements under hourly and daily where the array of indices have specified 
 const removeItemsByIndexes = (dataParent: ForecastData, Hourly_indexesToRemove: number[],  Daily_indexesToRemove: number[]):ForecastData  => {
     Hourly_indexesToRemove.reverse().forEach((index) => {
       dataParent.hourly.time.splice(index, 1);
