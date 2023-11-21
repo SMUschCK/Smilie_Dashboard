@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet } from 'react-native';
+import {TailwindProvider} from 'tailwind-rn';
+import utilities from '../../tailwind.json';
 
 // import { useData } from '../../assets/dataImport';
 
@@ -63,36 +65,20 @@ const WeatherForecast: React.FC = () => {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <View >
       {forecastData ? (
         <View>
-          <Text style={styles.header}>Weather Forecast</Text>
-          <Text style={styles.text}>Timezone: {forecastData.timezone}</Text>
-          <Text style={styles.text}>Latitude: {forecastData.hourly.relativehumidity_2m}</Text>
+          <Text >Weather Forecast</Text>
+          <Text >Timezone: {forecastData.timezone}</Text>
+          <Text >Latitude: {forecastData.hourly.relativehumidity_2m}</Text>
           {/* Display other relevant data here */}
         </View>
       ) : (
-        <Text style={styles.text}>Loading...</Text>
+        <Text >Loading...</Text>
       )}
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  header: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 16,
-  },
-  text: {
-    fontSize: 16,
-    marginBottom: 8,
-  },
-});
 
 export default WeatherForecast;
