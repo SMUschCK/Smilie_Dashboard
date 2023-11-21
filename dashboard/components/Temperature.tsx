@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
-import {AppRegistry, StyleSheet, Text, View} from 'react-native'
+import {AppRegistry, Image, Text, View, StyleSheet} from 'react-native'
 import { useData } from '../context/dataImport';
-import { VictoryChart, VictoryLine } from 'victory';
+import { VictoryChart, VictoryLine, VictoryTheme, VictoryAxis,VictoryLabel } from 'victory-native';
+import catSky from '../assets/catAtSky.gif';
 
 const TemperatureGraph: React.FC = () => {
 
@@ -11,6 +12,14 @@ const TemperatureGraph: React.FC = () => {
     const tempMax: number[] = forecastData ? forecastData.daily.temperature_2m_max : [];
     const tempMin: number[] = forecastData ? forecastData.daily.temperature_2m_min : [];
     const timeData: string[] = forecastData ? forecastData.daily.time : [];
+    const tempUnits: string = forecastData ? forecastData.daily_units.temperature_2m_min :"";
+    const tickValues: Date[] = timeData.map(dateString => new Date(dateString));
+
+    const tickFor = tickValues.map((tickValue) => {
+      const dayOfMonth = tickValue.getDate();
+      return dayOfMonth === 1 || dayOfMonth % 5 === 0 ? dayOfMonth : '';
+    });
+
 
     const dataMax = timeData.map((timeData, index) => ({
       timeData,
@@ -23,9 +32,28 @@ const TemperatureGraph: React.FC = () => {
 
     return (
         <View>
+          <View>
+            <Text className='text-lg'>Line Chart for Daily Temperature {tempUnits}</Text>
+          </View>
           {forecastData ? (
             <VictoryChart>
-                <VictoryLine
+                  <VictoryAxis 
+                    scale="time"
+                    standalone={false}
+                    style={styles.axisYears}
+                    tickValues={tickValues}
+                    tickFormat={tickFor}
+                  />
+                  <VictoryLabel x={200} y={290}
+                    text={"Days of the Month"}
+                  />
+                  <VictoryAxis dependentAxis
+                    offsetX={50}
+                    orientation="left"
+                    standalone={false}
+                  />
+
+                <VictoryLine theme={VictoryTheme.material}
                 data={dataMax}
                 x="timeData"
                 y="tempMax"/>
@@ -35,11 +63,38 @@ const TemperatureGraph: React.FC = () => {
                 y="tempMin"/>
             </VictoryChart>
           ) : (
-            <Text >Data not found...</Text>
+            <View>
+              <Image source={catSky} />
+              <Text>Data not found...</Text>
+            </View>
           )}
         </View>
       );
 
   };
   
+  const styles = StyleSheet.create({
+    tickLabels: {
+      fill: "black",
+      fontFamily: "inherit",
+      fontSize: 16
+    },
+    axisYears: {
+      axis: { stroke: "black", strokeWidth: 1},
+      ticks: {
+        stroke: "black",
+        strokeWidth: 1
+        },
+        tickLabels: {
+          fill: "black",
+          fontFamily: "inherit",
+          fontSize: 16
+        }
+    },
+    separator: {
+      marginVertical: 30,
+      height: 1,
+      width: '80%',
+    },
+  });
   export default TemperatureGraph;
