@@ -1,0 +1,58 @@
+.static {
+  position: static
+}
+
+.flex {
+  display: flex
+}
+
+.contents {
+  display: contents
+}
+
+.h-1\/4 {
+  height: 25%
+}
+
+.h-1\/5 {
+  height: 20%
+}
+
+.w-1\/2 {
+  width: 50%
+}
+
+.w-full {
+  width: 100%
+}
+
+.items-start {
+  align-items: flex-start
+}
+
+.items-center {
+  align-items: center
+}
+
+.bg-purple-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(147 51 234 / var(--tw-bg-opacity))
+}
+
+.pt-12 {
+  padding-top: 3rem
+}
+
+.pt-20 {
+  padding-top: 5rem
+}
+
+.text-rose-600 {
+  --tw-text-opacity: 1;
+  color: rgb(225 29 72 / var(--tw-text-opacity))
+}
+
+.text-teal-400 {
+  --tw-text-opacity: 1;
+  color: rgb(45 212 191 / var(--tw-text-opacity))
+}

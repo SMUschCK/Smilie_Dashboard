@@ -1,0 +1,75 @@
+{
+	"static": {
+		"style": {
+			"position": "static"
+		}
+	},
+	"flex": {
+		"style": {
+			"display": "flex"
+		}
+	},
+	"contents": {
+		"style": {
+			"display": "contents"
+		}
+	},
+	"h-1/4": {
+		"style": {
+			"height": "25%"
+		}
+	},
+	"h-1/5": {
+		"style": {
+			"height": "20%"
+		}
+	},
+	"w-1/2": {
+		"style": {
+			"width": "50%"
+		}
+	},
+	"w-full": {
+		"style": {
+			"width": "100%"
+		}
+	},
+	"items-start": {
+		"style": {
+			"alignItems": "flex-start"
+		}
+	},
+	"items-center": {
+		"style": {
+			"alignItems": "center"
+		}
+	},
+	"bg-purple-600": {
+		"style": {
+			"--tw-bg-opacity": 1,
+			"backgroundColor": "rgb(147 51 234 / var(--tw-bg-opacity))"
+		}
+	},
+	"pt-12": {
+		"style": {
+			"paddingTop": 48
+		}
+	},
+	"pt-20": {
+		"style": {
+			"paddingTop": 80
+		}
+	},
+	"text-rose-600": {
+		"style": {
+			"--tw-text-opacity": 1,
+			"color": "rgb(225 29 72 / var(--tw-text-opacity))"
+		}
+	},
+	"text-teal-400": {
+		"style": {
+			"--tw-text-opacity": 1,
+			"color": "rgb(45 212 191 / var(--tw-text-opacity))"
+		}
+	}
+}

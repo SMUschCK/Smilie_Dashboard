@@ -1,12 +1,8 @@
-/** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    "./src/**/*.{js,jsx,ts,tsx}",
-    './node_modules/react-tailwindcss-datetimepicker/dist/react-tailwindcss-datetimepicker.js',
-  ],
+  content: ['./components/**/*.{js,jsx,tsx,ts}', './app/**/*.{js,jsx,tsx,ts}'],
   theme: {
     extend: {},
   },
   plugins: [],
+  corePlugins: require('tailwind-rn/unsupported-core-plugins'),
 }
-
