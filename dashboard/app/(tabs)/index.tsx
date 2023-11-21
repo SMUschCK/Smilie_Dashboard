@@ -1,84 +1,123 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet } from 'react-native';
-import {TailwindProvider} from 'tailwind-rn';
-import utilities from '../../tailwind.json';
+import React, {useState} from 'react';
+import {ScrollView, Button, Text, View , SafeAreaView, StyleSheet} from 'react-native';
+import HumidityGraph from '../../components/HumidityGraph';
+import TemperatureGraph from '../../components/Temperature';
+import { DataProvider } from '../../context/dataImport';
+import RadiationGraph from '../../components/Radiation';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import ReactDatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import DropDownPicker from 'react-native-dropdown-picker';
 
-// import { useData } from '../../assets/dataImport';
 
-interface ForecastData {
-  // Define the types for the properties of your data object
-  // Adjust these types based on the actual structure of your API response
-  // For example, if your API response has a property 'exampleProperty' of type string, you can do:
-  // exampleProperty: string;
-  latitude: number;
-  longitude:number;
-  generationtime_ms:number;
-  utc_offset_seconds:number;
-  timezone: string;
-  timezone_abbreviation:string;
-  elevation: number;
-  hourly_units:{
-    time:string;
-    relativehumidity_2m:string;
-    direct_radiation:string;
-  };
-  
-  hourly: {
-    time:string;
-    relativehumidity_2m: number[];
-    direct_radiation: number[];
-  };
-  daily_units:{
-    time: string;
-    temperature_2m_max:string;
-    temperature_2m_min:string;
-  };
-  daily: {
-    time: string[];
-    temperature_2m_max: number[];
-    temperature_2m_min: number[];
-  };
-}
+const App: React.FC = () => {
+  const [startDate, setStartDate] = useState(new Date("2023-10-01T00:00"));
+  const [endDate, setEndDate] = useState(new Date("2023-10-10T23:00"));
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(0);
+  const [dropdownValues, setDropdownValues] = useState([
+    {label: 'None', value:0},
+    {label: 'Average', value:1},
+    {label: 'Max', value:2},
+    {label: 'Min', value:3}
+  ]);
 
-const WeatherForecast: React.FC = () => {
-  const [forecastData, setForecastData] = useState<ForecastData | null>(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          'https://api.open-meteo.com/v1/forecast?latitude=1.29&longitude=103.85&hourly=relativehumidity_2m,direct_radiation&daily=temperature_2m_max,temperature_2m_min&timezone=Asia%2FSingapore&start_date=2023-10-01&end_date=2023-10-10'
-        );
-
-        if (!response.ok) {
-          throw new Error('Failed to fetch data');
-        }
-
-        const data: ForecastData = await response.json();
-        setForecastData(data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchData();
-  }, []);
 
   return (
-    <View >
-      {forecastData ? (
-        <View>
-          <Text >Weather Forecast</Text>
-          <Text >Timezone: {forecastData.timezone}</Text>
-          <Text >Latitude: {forecastData.hourly.relativehumidity_2m}</Text>
-          {/* Display other relevant data here */}
+
+    <SafeAreaProvider>
+      <ScrollView >
+        <View className='bg-cyan-100'>
+          <View className='z-30'>
+            <View className='flex-row'>
+              <View className='w-3/6'>
+                <Text className='text-center'>Start Date</Text>
+                <View className='items-center'>
+                  <ReactDatePicker 
+                    showTimeSelect
+                    selected={startDate}
+                    onChange={(date) => setStartDate(date)}
+                    selectsStart
+                    startDate={startDate}
+                    endDate={endDate}
+                    minDate={new Date("2023-10-01T00:00")}
+                    maxDate={new Date("2023-10-10T23:00")}
+                    showDisabledMonthNavigation
+                    />
+                </View>
+              </View>
+              <View className='w-3/6'>
+                <Text className='text-center'>End Date</Text>
+                <View  className='items-center'>
+                  <ReactDatePicker 
+                    showTimeSelect
+                    selected={endDate}
+                    onChange={(date) => setEndDate(date)}
+                    selectsEnd
+                    startDate={startDate}
+                    endDate={endDate}
+                    maxDate={new Date("2023-10-10T23:00")}
+                    minDate={startDate}
+                    />
+                </View>
+              </View>
+            </View>
+          </View>
+          <View className='z-10'>
+            <View className='m-20'>
+              <View className='items-center'>
+                <View className='bg-gray-200'>
+                  <View className='m-5'>
+                    <View className='rounded-lg'>
+                    <Text className='text-lg'>Start Date: {startDate.toLocaleString()}</Text>
+                    <Text className='text-lg'>End Date: {endDate.toLocaleString()}</Text>
+                      <DropDownPicker
+                        open={open}
+                        value={value}
+                        items={dropdownValues}
+                        setOpen={setOpen}
+                        setValue={setValue}
+                        setItems={setDropdownValues}
+                      />
+                      <Text>{value}</Text>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </View>
+
+          <View className='grid'>
+            <View className='grid-cols-12'>
+            <DataProvider startDate={startDate} endDate={endDate} aggregate={value}>
+              <View className='m-5'>
+                <View className='bg-slate-50'>
+                  <HumidityGraph />
+                </View>
+              </View>
+              <View className='m-5'>
+                <View className='bg-slate-50'>
+                  <TemperatureGraph/>
+                </View>
+              </View>
+              <View className='m-5'>
+                <View className='bg-slate-50'>
+                  <RadiationGraph/>
+                </View>
+              </View>
+                        
+                        
+            </DataProvider>
+            </View>
+          </View>
+
         </View>
-      ) : (
-        <Text >Loading...</Text>
-      )}
-    </View>
+      </ScrollView>
+    </SafeAreaProvider>
+
   );
 };
 
 
-export default WeatherForecast;
+
+export default App;
