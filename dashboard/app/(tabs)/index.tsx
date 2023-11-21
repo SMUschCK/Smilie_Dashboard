@@ -71,7 +71,7 @@ const App: React.FC = () => {
                     <View className='rounded-lg'>
                     <Text className='text-lg'>Start Date: {startDate.toLocaleString()}</Text>
                     <Text className='text-lg'>End Date: {endDate.toLocaleString()}</Text>
-                      <DropDownPicker
+                      {/* <DropDownPicker
                         open={open}
                         value={value}
                         items={dropdownValues}
@@ -79,7 +79,7 @@ const App: React.FC = () => {
                         setValue={setValue}
                         setItems={setDropdownValues}
                       />
-                      <Text>{value}</Text>
+                      <Text>{value}</Text> */}
                     </View>
                   </View>
                 </View>
